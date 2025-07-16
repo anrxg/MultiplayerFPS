@@ -10,35 +10,33 @@ public class MenuManager : MonoBehaviour
         instance = this;
     }
 
-    public void OpenMenu(string menuName)
+   public void OpenMenu(string menuName)
+{
+    for (int i = 0; i < menus.Length; i++)
     {
-        for (int i = 0; i < menus.Length; i++)
+        if (menus[i].menuName == menuName)
         {
-            if (menus[i].menuName == menuName)
-            {
-                OpenMenu(menus[i]);
-                return; 
-            }
+            menus[i].Open();
         }
-
-        Debug.LogWarning("Menu not found: " + menuName);
-    }
-
-    public void OpenMenu(Menu menuToOpen)
-    {
-        for (int i = 0; i < menus.Length; i++)
+        else if (menus[i].isOpen)
         {
-            if (menus[i].isOpen && menus[i] != menuToOpen)
-            {
-                CloseMenu(menus[i]); 
-            }
-        }
-
-        if (!menuToOpen.isOpen)
-        {
-            menuToOpen.Open();
+            CloseMenu(menus[i]);
         }
     }
+}
+
+public void OpenMenu(Menu menu)
+{
+    for (int i = 0; i < menus.Length; i++)
+    {
+        if (menus[i].isOpen)
+        {
+            CloseMenu(menus[i]);
+        }
+    }
+    menu.Open();
+}
+
 
     public void CloseMenu(Menu menu)
     {
