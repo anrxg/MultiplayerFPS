@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
         Look();
         Move();
         Jump();
+        ChangeItems();
     }
 
     void FixedUpdate()
@@ -82,15 +83,60 @@ public class PlayerController : MonoBehaviour
     #region Item
     void EquipItems(int _index)
     {
+        if (_index < 0 || _index >= items.Length)
+        {
+            Debug.LogWarning("Tried to equip invalid item index: " + _index);
+            return;
+        }
+
+        if (previousItemIndex == _index)
+            return;
+
+        if (previousItemIndex >= 0)
+            items[previousItemIndex].itemGameObject.SetActive(false);
+
         itemIndex = _index;
         items[itemIndex].itemGameObject.SetActive(true);
-
-        if (previousItemIndex == -1)
-        {
-            items[itemIndex].itemGameObject.SetActive(true);
-        }
         previousItemIndex = itemIndex;
     }
+
+
+    void ChangeItems()
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (Input.GetKeyDown((i + 1).ToString()))
+            {
+                EquipItems(i);
+                break;
+            }
+        }
+
+        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
+        {
+            if (itemIndex >= items.Length - 1)
+            {
+                EquipItems(0);
+            }
+            else
+            {
+                EquipItems(itemIndex + 1);
+            }
+        }
+        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
+        {
+            if (itemIndex <= 0)
+            {
+                EquipItems(items.Length - 1);
+            }
+            else
+            {
+                EquipItems(itemIndex - 1);
+            }
+        }
+
+    }
+
 
     #endregion
 

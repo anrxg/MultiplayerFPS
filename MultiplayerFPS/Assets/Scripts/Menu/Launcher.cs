@@ -139,7 +139,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void OnTitleCreateRoomClicked()
     {
         MenuManager.instance.OpenMenu("CreateRoom");
-        Debug.Log("Create room clicked");
     }
 
     public void OnCRCreateRoomClicked()
