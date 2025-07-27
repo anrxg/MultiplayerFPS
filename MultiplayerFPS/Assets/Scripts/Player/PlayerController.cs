@@ -44,6 +44,10 @@ public class PlayerController : MonoBehaviour
         Move();
         Jump();
         ChangeItems();
+        if (Input.GetMouseButtonDown(0))
+        {
+            items[itemIndex].Use();
+        }
     }
 
     void FixedUpdate()
