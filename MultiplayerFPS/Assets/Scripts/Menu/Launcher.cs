@@ -108,6 +108,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         if (string.IsNullOrEmpty(roomNameInputField.text))
         {
+            Debug.Log("Room name cannot be empty...");
             return;
         }
         PhotonNetwork.CreateRoom(roomNameInputField.text);
@@ -138,6 +139,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void OnTitleCreateRoomClicked()
     {
         MenuManager.instance.OpenMenu("CreateRoom");
+        Debug.Log("Create room clicked");
     }
 
     public void OnCRCreateRoomClicked()

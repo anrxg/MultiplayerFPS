@@ -1,16 +1,27 @@
+using Photon.Pun;
 using UnityEngine;
+using System.IO;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviourPunCallbacks
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public static PlayerManager instance;
+    PhotonView pv;
+    void Awake()
+    {
+        pv = GetComponent<PhotonView>();
+        instance = this;
+    }
+
     void Start()
     {
-        
+        if (pv.IsMine)
+        {
+            CreateController();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    void CreateController()
     {
-        
-    }
+        PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Player"), Vector3.zero, Quaternion.identity);
+    } 
 }
