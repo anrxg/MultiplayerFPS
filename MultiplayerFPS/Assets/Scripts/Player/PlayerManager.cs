@@ -23,7 +23,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     void CreateController()
     {
-        controller = PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Player"), Vector3.zero, Quaternion.identity, 0, new object[] { pv.ViewID });
+        Transform spawnPoint = SpawnManager.instance.GetSpawnPoints();
+        controller = PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Player"), spawnPoint.position, spawnPoint.rotation, 0, new object[] { pv.ViewID });
     }
 
     public void Die()
