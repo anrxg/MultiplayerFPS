@@ -1,7 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
     [SerializeField] float mouseSensi = 3f, sprintSpeed = 6f, walkSpeed = 3f, jumpForce = 250f, smoothTime = .15f;
     [SerializeField] float verticalLookRotation;
@@ -9,21 +9,25 @@ public class PlayerController : MonoBehaviour
     Vector3 smoothMoveVelocity, moveAmount;
     Rigidbody rb;
     [SerializeField] GameObject camHolder;
-    PhotonView view;
+    PhotonView pv;
 
     [SerializeField] Items[] items;
     int itemIndex;
     int previousItemIndex = -1;
 
+    const float maxHealth = 100f;
+    float currentHealth = maxHealth;
+    PlayerManager playerManager;
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        view = GetComponent<PhotonView>();
+        pv = GetComponent<PhotonView>();
+        playerManager = PhotonView.Find((int)pv.InstantiationData[0]).GetComponent<PlayerManager>();
     }
 
     void Start()
     {
-        if (view.IsMine)
+        if (pv.IsMine)
         {
             EquipItems(0);
         }
@@ -36,7 +40,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!view.IsMine)
+        if (!pv.IsMine)
         {
             return;
         }
@@ -52,6 +56,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!pv.IsMine) return;  
         rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
 
@@ -144,4 +149,29 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    public void TakeDamage(float damage)
+    {
+        pv.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+    }
+
+    #region RPC
+
+    [PunRPC]
+    void RPC_TakeDamage(float damage)
+    {
+        if (!pv.IsMine)
+            return;
+
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        playerManager.Die();
+    }
+    #endregion
 }

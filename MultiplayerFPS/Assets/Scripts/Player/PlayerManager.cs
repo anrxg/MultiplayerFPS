@@ -5,6 +5,7 @@ using System.IO;
 public class PlayerManager : MonoBehaviourPunCallbacks
 {
     public static PlayerManager instance;
+    GameObject controller;
     PhotonView pv;
     void Awake()
     {
@@ -22,6 +23,12 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     void CreateController()
     {
-        PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Player"), Vector3.zero, Quaternion.identity);
-    } 
+        controller = PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Player"), Vector3.zero, Quaternion.identity, 0, new object[] { pv.ViewID });
+    }
+
+    public void Die()
+    {
+        PhotonNetwork.Destroy(controller);
+        Invoke(nameof(CreateController), 0.5f);
+    }
 }
