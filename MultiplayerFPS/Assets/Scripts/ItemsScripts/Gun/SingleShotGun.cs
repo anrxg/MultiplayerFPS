@@ -34,7 +34,7 @@ public class SingleShotGun : Gun
         if (colliders.Length != 0)
         {
             GameObject bulletImpactObj = Instantiate(bullectImpactPrefab, hitPosition + hitNormal * .01f, Quaternion.LookRotation(hitNormal, Vector3.up) * bullectImpactPrefab.transform.rotation);
-            Destroy(bulletImpactObj, 5f);
+            Destroy(bulletImpactObj, 3f);
             bulletImpactObj.transform.SetParent(colliders[0].transform);
         }
     }

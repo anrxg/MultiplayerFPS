@@ -10,7 +10,7 @@ public class PlayerGroundCheck : MonoBehaviour
         playerController = GetComponent<PlayerController>();
     }
 
-    void OTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == playerController.gameObject)
         {
