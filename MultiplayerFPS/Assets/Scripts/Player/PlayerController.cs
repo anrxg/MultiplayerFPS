@@ -1,5 +1,8 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
 public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
@@ -15,9 +18,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     int itemIndex;
     int previousItemIndex = -1;
 
-    const float maxHealth = 100f;
+    const float maxHealth = 150f;
     float currentHealth = maxHealth;
     PlayerManager playerManager;
+    [SerializeField] Image healthBarImage;
+    [SerializeField] GameObject ui;
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -35,6 +40,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(rb);
+            Destroy(ui);
         }
     }
 
@@ -61,7 +67,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     void FixedUpdate()
     {
-        if (!pv.IsMine) return;  
+        if (!pv.IsMine) return;
         rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
 
@@ -156,21 +162,28 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     public void TakeDamage(float damage)
     {
-        pv.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+        pv.RPC(nameof(RPC_TakeDamage), pv.Owner, damage);
     }
 
     #region RPC
 
     [PunRPC]
-    void RPC_TakeDamage(float damage)
+    void RPC_TakeDamage(float damage, PhotonMessageInfo info)
     {
-        if (!pv.IsMine)
-            return;
-
         currentHealth -= damage;
+        healthBarImage.fillAmount = currentHealth / maxHealth;
         if (currentHealth <= 0)
         {
             Die();
+            PlayerManager.Find(info.Sender)?.GetKill();
+        }
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    {
+        if (changedProps.ContainsKey("itemIndes") && !pv.IsMine && targetPlayer == pv.Owner)
+        {
+            EquipItems((int)changedProps[itemIndex]);
         }
     }
 
