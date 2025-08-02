@@ -7,7 +7,7 @@ public class PlayerGroundCheck : MonoBehaviour
 
     void Awake()
     {
-        playerController = GetComponent<PlayerController>();
+        playerController = GetComponentInParent<PlayerController>();
     }
 
     void OnTriggerEnter(Collider other)

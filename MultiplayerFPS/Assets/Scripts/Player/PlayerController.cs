@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
     [SerializeField] float mouseSensi = 3f, sprintSpeed = 6f, walkSpeed = 3f, jumpForce = 250f, smoothTime = .15f;
     [SerializeField] float verticalLookRotation;
-    bool grounded;
+    [SerializeField] bool grounded;
     Vector3 smoothMoveVelocity, moveAmount;
     Rigidbody rb;
     [SerializeField] GameObject camHolder;

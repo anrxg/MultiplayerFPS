@@ -630,9 +630,10 @@ MonoBehaviour:
   mouseSensi: 2
   sprintSpeed: 10
   walkSpeed: 5
-  jumpForce: 220
+  jumpForce: 300
   smoothTime: 0.15
   verticalLookRotation: 1
+  grounded: 0
   camHolder: {fileID: 4585044644006537233}
   items:
   - {fileID: 7831479207545015587}
@@ -941,7 +942,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1358,21 +1359,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3503643608116425843, guid: c20daf91d2bce304c85fec03f5fafd3b,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.69375175
-      objectReference: {fileID: 0}
-    - target: {fileID: 3503643608116425843, guid: c20daf91d2bce304c85fec03f5fafd3b,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.69375175
-      objectReference: {fileID: 0}
-    - target: {fileID: 3503643608116425843, guid: c20daf91d2bce304c85fec03f5fafd3b,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.73024315
-      objectReference: {fileID: 0}
-    - target: {fileID: 3503643608116425843, guid: c20daf91d2bce304c85fec03f5fafd3b,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.43702602
       objectReference: {fileID: 0}
@@ -1426,9 +1412,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: rifle_001
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: -1280058959441750331, guid: c20daf91d2bce304c85fec03f5fafd3b, type: 3}
-    - {fileID: 5527063934811208959, guid: c20daf91d2bce304c85fec03f5fafd3b, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
